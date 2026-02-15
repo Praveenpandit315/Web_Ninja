@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title> Ai Doctor 👨‍⚕️</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="flex items-center justify-center min-h-screen relative">
+    <!-- Home Screen -->
+    <div id="homeScreen" class="screen">
+      <div class="header">
+        <h2>Welcome, User!</h2>
+        <div style="cursor: pointer;" onclick="showScreen('profileScreen')">👤</div>
+      </div>
+
+      <div style="padding: 20px 20px 80px 20px;">
+        <div class="card" onclick="showScreen('symptomScreen')">
+          <div style="display: flex; align-items: center; gap: 15px;">
+            <div style="font-size: 40px;">🩺</div>
+            <div>
+              <h3 style="font-size: 18px; font-weight: 600; color: #2d3748;">Check Symptoms</h3>
+              <p style="color: #718096; font-size: 14px; margin-top: 5px;">Describe your symptoms</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" onclick="showScreen('scanScreen')">
+          <div style="display: flex; align-items: center; gap: 15px;">
+            <div style="font-size: 40px;">📸</div>
+            <div>
+              <h3 style="font-size: 18px; font-weight: 600; color: #2d3748;">Scan Image</h3>
+              <p style="color: #718096; font-size: 14px; margin-top: 5px;">AI-powered image analysis</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" onclick="showScreen('riskScreen')">
+          <div style="display: flex; align-items: center; gap: 15px;">
+            <div style="font-size: 40px;">⚠️</div>
+            <div>
+              <h3 style="font-size: 18px; font-weight: 600; color: #2d3748;">Risk Assessment</h3>
+              <p style="color: #718096; font-size: 14px; margin-top: 5px;">Take health quizzes</p>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="font-size: 20px; font-weight: 600; margin: 30px 0 15px 0; color: #2d3748;">💡 Quick Health Tips</h3>
+
+        <div class="tip-card">
+          <h4 style="font-weight: 600; margin-bottom: 8px; color: #2d3748;">Stay Hydrated</h4>
+          <p style="color: #718096; font-size: 14px;">Drink at least 8 glasses of water daily for optimal health.</p>
+        </div>
+
+        <div class="tip-card">
+          <h4 style="font-weight: 600; margin-bottom: 8px; color: #2d3748;">Regular Exercise</h4>
+          <p style="color: #718096; font-size: 14px;">30 minutes of daily exercise can boost your immune system.</p>
+        </div>
+
+        <div class="tip-card">
+          <h4 style="font-weight: 600; margin-bottom: 8px; color: #2d3748;">Balanced Diet</h4>
+          <p style="color: #718096; font-size: 14px;">Include fruits, vegetables, and proteins in your meals.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Symptom Checker Screen -->
+    <div id="symptomScreen" class="screen">
+      <div class="header">
+        <span onclick="showScreen('homeScreen')" style="cursor: pointer;">← Back</span>
+        <h2>Symptom Checker</h2>
+        <div></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <p style="color: #718096; margin-bottom: 20px;">Describe your symptoms in detail for accurate analysis</p>
+
+        <textarea id="symptomInput" class="input-field" rows="5"
+          placeholder="E.g., I have a headache, fever, and body aches for 2 days..."></textarea>
+
+        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 20px;">
+          <button class="voice-btn" id="voiceBtn" onclick="toggleVoice()">🎤</button>
+          <span style="color: #718096; font-size: 14px;" id="voiceStatus">Tap to use voice input</span>
+        </div>
+
+        <button class="btn-primary w-full" onclick="analyzeSymptoms()">🔍 Analyze Symptoms</button>
+
+        <div id="symptomResults" style="display: none; margin-top: 30px;"></div>
+      </div>
+    </div>
+
+    <!-- Scan Screen -->
+    <div id="scanScreen" class="screen">
+      <div class="header">
+        <span onclick="showScreen('homeScreen')" style="cursor: pointer;">← Back</span>
+        <h2>AI Image Scanner</h2>
+        <div></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <p style="color: #718096; margin-bottom: 20px;">Upload or capture an image for AI analysis</p>
+
+        <div class="upload-area" onclick="document.getElementById('imageInput').click()">
+          <div style="font-size: 60px; margin-bottom: 15px;">📷</div>
+          <h3 style="font-size: 18px; font-weight: 600; color: #2d3748;">Upload Image</h3>
+          <p style="color: #718096; margin-top: 8px; font-size: 14px;">Click to browse or drag & drop</p>
+          <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="previewImage(this)">
+        </div>
+
+        <div id="imagePreview" style="display: none; margin: 20px 0;">
+          <img id="previewImg" style="width: 100%; border-radius: 12px; max-height: 300px; object-fit: cover;">
+          <button class="btn-primary w-full mt-4" onclick="analyzeScan()">🔬 Analyze Image</button>
+        </div>
+
+        <div id="scanResults" style="display: none; margin-top: 30px;"></div>
+      </div>
+    </div>
+
+    <!-- Risk Assessment Screen -->
+    <div id="riskScreen" class="screen">
+      <div class="header">
+        <span onclick="showScreen('homeScreen')" style="cursor: pointer;">← Back</span>
+        <h2>Risk Assessment</h2>
+        <div></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <p style="color: #718096; margin-bottom: 20px;">Take a quick quiz to assess your health risks</p>
+
+        <div id="quizSelection">
+          <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 15px; color: #2d3748;">Select Assessment Type
+          </h3>
+
+          <div class="card" onclick="startQuiz('diabetes')">
+            <h4 style="font-weight: 600; color: #2d3748;">🩸 Diabetes Risk</h4>
+            <p style="color: #718096; font-size: 14px; margin-top: 5px;">5 questions • 2 minutes</p>
+          </div>
+
+          <div class="card" onclick="startQuiz('heart')">
+            <h4 style="font-weight: 600; color: #2d3748;">❤️ Heart Disease Risk</h4>
+            <p style="color: #718096; font-size: 14px; margin-top: 5px;">6 questions • 3 minutes</p>
+          </div>
+
+          <div class="card" onclick="startQuiz('mental')">
+            <h4 style="font-weight: 600; color: #2d3748;">🧠 Mental Health Check</h4>
+            <p style="color: #718096; font-size: 14px; margin-top: 5px;">7 questions • 3 minutes</p>
+          </div>
+        </div>
+
+        <div id="quizContent" style="display: none;">
+          <div style="background: #f7fafc; padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+              <span style="color: #718096; font-size: 14px;">Question <span id="currentQ">1</span> of <span
+                  id="totalQ">5</span></span>
+              <span style="color: #667eea; font-weight: 600;" id="quizProgress">20%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="quizProgressBar" style="width: 20%;"></div>
+            </div>
+          </div>
+
+          <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #2d3748;" id="questionText"></h3>
+
+          <div id="optionsContainer"></div>
+
+          <button class="btn-primary w-full mt-5" onclick="nextQuestion()" id="nextBtn" disabled
+            style="opacity: 0.5;">Next Question</button>
+        </div>
+
+        <div id="quizResult" style="display: none;">
+          <div style="text-align: center; padding: 30px 0;">
+            <div style="font-size: 80px; margin-bottom: 20px;">📊</div>
+            <h3 style="font-size: 24px; font-weight: 600; margin-bottom: 15px; color: #2d3748;">Assessment Complete</h3>
+
+            <div id="riskBadge" class="risk-badge risk-low" style="font-size: 18px; display: inline-block;">LOW RISK
+            </div>
+
+            <p id="resultText" style="color: #718096; margin: 20px 0; font-size: 16px;"></p>
+
+            <div style="background: #f7fafc; padding: 20px; border-radius: 12px; text-align: left; margin: 20px 0;">
+              <h4 style="font-weight: 600; margin-bottom: 10px; color: #2d3748;">Recommendations:</h4>
+              <ul id="recommendationsList" style="color: #718096; padding-left: 20px;">
+              </ul>
+            </div>
+
+            <button class="btn-primary w-full" onclick="resetQuiz()">Take Another Assessment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nearby Help Screen -->
+    <div id="nearbyScreen" class="screen">
+      <div class="header">
+        <span onclick="showScreen('homeScreen')" style="cursor: pointer;">← Back</span>
+        <h2>Nearby Clinics</h2>
+        <div></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="map-container">
+          <div style="text-align: center;">
+            <div style="font-size: 50px; margin-bottom: 10px;">🗺️</div>
+            <p>Map showing nearby clinics</p>
+            <p style="font-size: 12px; color: #a0aec0; margin-top: 5px;">(Location services required)</p>
+          </div>
+        </div>
+
+        <h3 style="font-size: 18px; font-weight: 600; margin: 25px 0 15px 0; color: #2d3748;">📍 Nearby Facilities</h3>
+
+        <div class="clinic-card">
+          <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 10px;">
+            <div style="flex: 1; min-width: 200px;">
+              <h4 style="font-weight: 600; color: #2d3748; margin-bottom: 5px;">City Health Clinic</h4>
+              <p style="color: #718096; font-size: 14px;">0.8 km away • Open now</p>
+              <p style="color: #718096; font-size: 13px; margin-top: 5px;">⭐ 4.5 (230 reviews)</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn-secondary" style="padding: 8px 16px; font-size: 13px;"
+                onclick="alert('Calling clinic...')">📞</button>
+              <button class="btn-primary" style="padding: 8px 16px; font-size: 13px;"
+                onclick="alert('Opening navigation...')">🧭</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="clinic-card">
+          <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 10px;">
+            <div style="flex: 1; min-width: 200px;">
+              <h4 style="font-weight: 600; color: #2d3748; margin-bottom: 5px;">Medicare Hospital</h4>
+              <p style="color: #718096; font-size: 14px;">1.2 km away • 24/7</p>
+              <p style="color: #718096; font-size: 13px; margin-top: 5px;">⭐ 4.8 (450 reviews)</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn-secondary" style="padding: 8px 16px; font-size: 13px;"
+                onclick="alert('Calling hospital...')">📞</button>
+              <button class="btn-primary" style="padding: 8px 16px; font-size: 13px;"
+                onclick="alert('Opening navigation...')">🧭</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="clinic-card">
+          <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 10px;">
+            <div style="flex: 1; min-width: 200px;">
+              <h4 style="font-weight: 600; color: #2d3748; margin-bottom: 5px;">Family Care Center</h4>
+              <p style="color: #718096; font-size: 14px;">2.0 km away • Closes 8 PM</p>
+              <p style="color: #718096; font-size: 13px; margin-top: 5px;">⭐ 4.3 (180 reviews)</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn-secondary" style="padding: 8px 16px; font-size: 13px;"
+                onclick="alert('Calling center...')">📞</button>
+              <button class="btn-primary" style="padding: 8px 16px; font-size: 13px;"
+                onclick="alert('Opening navigation...')">🧭</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #fff3cd; padding: 15px; border-radius: 12px; margin: 20px 0;">
+          <strong style="color: #856404;">🚨 Emergency?</strong>
+          <p style="color: #856404; margin-top: 8px; font-size: 14px;">Call emergency services immediately at 911 or
+            your local emergency number.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- History Screen -->
+    <div id="historyScreen" class="screen">
+      <div class="header">
+        <span onclick="showScreen('homeScreen')" style="cursor: pointer;">← Back</span>
+        <h2>Health History</h2>
+        <div></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <p style="color: #718096; margin-bottom: 20px;">Your past predictions and assessments</p>
+
+        <div class="history-item">
+          <div>
+            <h4 style="font-weight: 600; color: #2d3748;">Common Flu</h4>
+            <p style="color: #718096; font-size: 13px; margin-top: 5px;">Symptom Check • Nov 10, 2025</p>
+            <span class="risk-badge risk-medium" style="font-size: 12px; margin-top: 8px;">85% Confidence</span>
+          </div>
+          <button class="btn-secondary" style="padding: 8px 16px; font-size: 13px;"
+            onclick="alert('View details')">View</button>
+        </div>
+
+        <div class="history-item">
+          <div>
+            <h4 style="font-weight: 600; color: #2d3748;">Skin Rash Analysis</h4>
+            <p style="color: #718096; font-size: 13px; margin-top: 5px;">Image Scan • Nov 8, 2025</p>
+            <span class="risk-badge risk-low" style="font-size: 12px; margin-top: 8px;">72% Confidence</span>
+          </div>
+          <button class="btn-secondary" style="padding: 8px 16px; font-size: 13px;"
+            onclick="alert('View details')">View</button>
+        </div>
+
+        <div class="history-item">
+          <div>
+            <h4 style="font-weight: 600; color: #2d3748;">Diabetes Risk Assessment</h4>
+            <p style="color: #718096; font-size: 13px; margin-top: 5px;">Quiz • Nov 5, 2025</p>
+            <span class="risk-badge risk-low" style="font-size: 12px; margin-top: 8px;">Low Risk</span>
+          </div>
+          <button class="btn-secondary" style="padding: 8px 16px; font-size: 13px;"
+            onclick="alert('View details')">View</button>
+        </div>
+
+        <div style="text-align: center; padding: 40px 0; color: #a0aec0;">
+          <p>That's all your history!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Screen -->
+    <div id="profileScreen" class="screen">
+      <div class="header">
+        <span onclick="showScreen('homeScreen')" style="cursor: pointer;">← Back</span>
+        <h2>Profile</h2>
+        <div></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div style="text-align: center; padding: 20px 0;">
+          <div
+            style="width: 100px; height: 100px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: white;">
+            👤
+          </div>
+          <h3 style="font-size: 22px; font-weight: 600; color: #2d3748;">John Doe</h3>
+          <p style="color: #718096; margin-top: 5px;">john.doe@email.com</p>
+        </div>
+
+        <div class="card" onclick="alert('Edit profile')">
+          <div style="display: flex; align-items: center; gap: 15px;">
+            <div style="font-size: 24px;">✏️</div>
+            <div>
+              <h4 style="font-weight: 600; color: #2d3748;">Edit Profile</h4>
+              <p style="color: #718096; font-size: 14px; margin-top: 5px;">Update your information</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" onclick="alert('Settings')">
+          <div style="display: flex; align-items: center; gap: 15px;">
+            <div style="font-size: 24px;">⚙️</div>
+            <div>
+              <h4 style="font-weight: 600; color: #2d3748;">Settings</h4>
+              <p style="color: #718096; font-size: 14px; margin-top: 5px;">Manage app preferences</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" onclick="alert('Privacy Policy')">
+          <div style="display: flex; align-items: center; gap: 15px;">
+            <div style="font-size: 24px;">🔒</div>
+            <div>
+              <h4 style="font-weight: 600; color: #2d3748;">Privacy & Security</h4>
+              <p style="color: #718096; font-size: 14px; margin-top: 5px;">Data protection settings</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" onclick="alert('Help & Support')">
+          <div style="display: flex; align-items: center; gap: 15px;">
+            <div style="font-size: 24px;">❓</div>
+            <div>
+              <h4 style="font-weight: 600; color: #2d3748;">Help & Support</h4>
+              <p style="color: #718096; font-size: 14px; margin-top: 5px;">Get assistance</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-secondary w-full" style="margin-top: 30px;" onclick="logout()">
+          🚪 Logout
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <div class="nav-item active" onclick="setActiveNav(this); showScreen('homeScreen')">
+        <div class="icon">🏠</div>
+        <span style="font-size: 12px;">Home</span>
+      </div>
+      <div class="nav-item" onclick="setActiveNav(this); showScreen('nearbyScreen')">
+        <div class="icon">📍</div>
+        <span style="font-size: 12px;">Nearby</span>
+      </div>
+      <div class="nav-item" onclick="setActiveNav(this); showScreen('historyScreen')">
+        <div class="icon">📋</div>
+        <span style="font-size: 12px;">History</span>
+      </div>
+      <div class="nav-item" onclick="setActiveNav(this); showScreen('profileScreen')">
+        <div class="icon">👤</div>
+        <span style="font-size: 12px;">Profile</span>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
