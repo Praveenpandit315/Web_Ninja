@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Care AI 😊</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme">
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center">
+                        <svg class="h-10 w-10 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                        <span class="ml-2 text-2xl font-bold">Care AI</span>
+                    </div>
+                    
+                    <!-- Navigation Links -->
+                    <div class="hidden md:flex space-x-1">
+                        <a href="#home" class="nav-link font-semibold">Home</a>
+                        <a href="#symptoms" class="nav-link">Symptoms</a>
+                        <a href="#assessment" class="nav-link">Risk Assessment</a>
+                        <a href="#tips" class="nav-link">Daily Tips</a>
+                        <a href="#medicines" class="nav-link">Medicines</a>
+                    </div>
+                </div>
+
+                <!-- Right Side Navigation -->
+                <div class="flex items-center space-x-4">
+                    <!-- Language Dropdown -->
+                    <div class="dropdown relative hidden md:block">
+                        <button class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                            </svg>
+                            <span id="current-language">EN</span>
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="dropdown-content absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2">
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" onclick="changeLanguage('EN')">English</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" onclick="changeLanguage('HI')">हिंदी</a>
+                        </div>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <div class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">
+                        <div class="theme-toggle-circle"></div>
+                    </div>
+
+                    <!-- Profile -->
+                    <div class="dropdown relative">
+                        <button class="flex items-center space-x-2 px-3 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23667eea'/%3E%3Ctext x='16' y='21' text-anchor='middle' fill='white' font-size='14' font-family='Arial' font-weight='bold'%3EU%3C/text%3E%3C/svg%3E" alt="Profile" class="h-8 w-8 rounded-full">
+                        </button>
+                        <div class="dropdown-content absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2">
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">My Profile</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Health Records</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
+                            <hr class="my-2 border-gray-200 dark:border-gray-700">
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-red-600">Logout</a>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" class="md:hidden">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 dark:border-gray-700">
+            <div class="px-4 py-3 space-y-3">
+                <a href="#home" class="block py-2 hover:text-purple-600">Home</a>
+                <a href="#symptoms" class="block py-2 hover:text-purple-600">Symptoms</a>
+                <a href="#assessment" class="block py-2 hover:text-purple-600">Risk Assessment</a>
+                <a href="#tips" class="block py-2 hover:text-purple-600">Daily Tips</a>
+                <a href="#medicines" class="block py-2 hover:text-purple-600">Medicines</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section pt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="hero-content slide-in-up">
+                <div class="mb-4">
+                    <span class="badge badge-success">🔬 AI-Powered Detection</span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                    Your Health<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-pink-300">
+                        Guardian
+                    </span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-100 mb-4 max-w-2xl">
+                    Advanced AI Disease Detection & Health Management
+                </p>
+                <p class="text-lg text-gray-200 mb-8 max-w-2xl">
+                    English | Hindi 
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 mb-8">
+                    <button class="btn-primary px-8 py-4 rounded-full text-white font-semibold text-lg flex items-center justify-center space-x-2">
+                        <span>Start Analysis</span>
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </button>
+                    <button class="px-8 py-4 rounded-full bg-white bg-opacity-20 text-white font-semibold text-lg hover:bg-opacity-30 transition flex items-center justify-center space-x-2">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Learn More</span>
+                    </button>
+                </div>
+                <div class="flex items-center space-x-2 text-white">
+                    <svg class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    </svg>
+                    <span class="font-semibold">4.9/5</span>
+                    <span class="text-gray-200">• Trusted by 500K+ users</span>
+                </div>
+            </div>
+            
+            <!-- Hero Image Placeholder -->
+            <div class="hero-image hidden lg:block">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='400' viewBox='0 0 500 400'%3E%3Crect fill='%23ffffff' fill-opacity='0.1' width='500' height='400' rx='20'/%3E%3Cg opacity='0.3'%3E%3Ccircle cx='350' cy='150' r='80' fill='%23ffffff'/%3E%3Ccircle cx='250' cy='250' r='60' fill='%23ffffff'/%3E%3Ccircle cx='400' cy='280' r='50' fill='%23ffffff'/%3E%3C/g%3E%3C/svg%3E" alt="Medical Illustration" class="rounded-2xl">
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <!-- Quick Access Cards -->
+        <div class="grid md:grid-cols-4 gap-6 mb-12">
+            <!-- Analyze Symptoms -->
+            <div class="feature-card card p-6 shadow-lg">
+                <div class="feature-icon bg-blue-100 dark:bg-blue-900 rounded-full w-14 h-14 flex items-center justify-center mb-4">
+                    <svg class="h-8 w-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Analyze Symptoms</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">Get instant analysis of your symptoms</p>
+                <button class="text-purple-600 font-semibold hover:text-purple-700 flex items-center space-x-1">
+                    <span>Start Now</span>
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Risk Assessment -->
+            <div class="feature-card card p-6 shadow-lg">
+                <div class="feature-icon bg-orange-100 dark:bg-orange-900 rounded-full w-14 h-14 flex items-center justify-center mb-4">
+                    <svg class="h-8 w-8 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Risk Assessment</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">Evaluate your health risk factors</p>
+                <button class="text-purple-600 font-semibold hover:text-purple-700 flex items-center space-x-1">
+                    <span>Assess Now</span>
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Daily Tips -->
+            <div class="feature-card card p-6 shadow-lg">
+                <div class="feature-icon bg-green-100 dark:bg-green-900 rounded-full w-14 h-14 flex items-center justify-center mb-4">
+                    <svg class="h-8 w-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Daily Tips</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">Personalized health tips</p>
+                <button class="text-purple-600 font-semibold hover:text-purple-700 flex items-center space-x-1">
+                    <span>View Tips</span>
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Medicine Tracker -->
+            <div class="feature-card card p-6 shadow-lg">
+                <div class="feature-icon bg-red-100 dark:bg-red-900 rounded-full w-14 h-14 flex items-center justify-center mb-4">
+                    <svg class="h-8 w-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Medicine Reminder</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">Track your medications</p>
+                <button class="text-purple-600 font-semibold hover:text-purple-700 flex items-center space-x-1">
+                    <span>Set Reminder</span>
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Today's Health Tips -->
+        <section id="tips" class="mb-12">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold">Today's Health Tips</h2>
+                <button class="text-purple-600 hover:text-purple-700 font-semibold">View All</button>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Tip 1 -->
+                <div class="feature-card card p-6 shadow-lg">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-blue-100 dark:bg-blue-900 rounded-full p-3">
+                            <svg class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-2">Stay Hydrated</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">Drink at least 8 glasses of water daily to maintain optimal health and energy levels.</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">6/8 glasses today</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tip 2 -->
+                <div class="feature-card card p-6 shadow-lg">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-green-100 dark:bg-green-900 rounded-full p-3">
+                            <svg class="h-6 w-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-2">Exercise Daily</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">30 minutes of moderate exercise can boost your immune system and overall wellness.</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">14/30 minutes today</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tip 3 -->
+                <div class="feature-card card p-6 shadow-lg">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-purple-100 dark:bg-purple-900 rounded-full p-3">
+                            <svg class="h-6 w-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-2">Quality Sleep</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">Aim for 7-9 hours of sleep to allow your body to recover and rejuvenate properly.</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 80%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">6.5/8 hours last night</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Medicine Reminders -->
+        <section id="medicines" class="mb-12">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold">Medicine Reminders</h2>
+                <button class="btn-primary px-6 py-2 rounded-full text-white font-semibold flex items-center space-x-2">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    <span>Add Medicine</span>
+                </button>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Medicine Card 1 -->
+                <div class="medicine-card card p-6 shadow-lg">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-blue-100 dark:bg-blue-900 rounded-lg p-3">
+                                <svg class="h-8 w-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1">Aspirin</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">100mg • After breakfast</p>
+                                <span class="badge badge-info mt-2">Daily</span>
+                            </div>
+                        </div>
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>Next: 9:00 AM (in 2 hours)</span>
+                        </div>
+                        <button class="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition font-semibold">
+                            Mark Taken
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Medicine Card 2 -->
+                <div class="medicine-card card p-6 shadow-lg">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-red-100 dark:bg-red-900 rounded-lg p-3">
+                                <svg class="h-8 w-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1">Vitamin D3</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">1000 IU • After lunch</p>
+                                <span class="badge badge-warning mt-2">Weekly</span>
+                            </div>
+                        </div>
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>Next: 1:00 PM (in 5 hours)</span>
+                        </div>
+                        <button class="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition font-semibold">
+                            Mark Taken
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Medicine Card 3 -->
+                <div class="medicine-card card p-6 shadow-lg">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-purple-100 dark:bg-purple-900 rounded-lg p-3">
+                                <svg class="h-8 w-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1">Omega-3</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">500mg • After dinner</p>
+                                <span class="badge badge-info mt-2">Daily</span>
+                            </div>
+                        </div>
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2 text-sm text-green-600 dark:text-green-400">
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Taken at 8:30 PM</span>
+                        </div>
+                        <span class="badge badge-success">Completed</span>
+                    </div>
+                </div>
+
+                <!-- Medicine Card 4 -->
+                <div class="medicine-card card p-6 shadow-lg">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-orange-100 dark:bg-orange-900 rounded-lg p-3">
+                                <svg class="h-8 w-8 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1">Multivitamin</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">1 tablet • Morning</p>
+                                <span class="badge badge-info mt-2">Daily</span>
+                            </div>
+                        </div>
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2 text-sm text-red-600 dark:text-red-400 pulse">
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Missed: 7:00 AM</span>
+                        </div>
+                        <button class="px-4 py-2 bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 rounded-lg hover:bg-yellow-200 dark:hover:bg-yellow-800 transition font-semibold">
+                            Take Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Risk Assessment Section -->
+        <section id="assessment" class="mb-12">
+            <h2 class="text-3xl font-bold mb-6">Your Health Assessment</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Overall Health Score -->
+                <div class="feature-card card p-8 shadow-lg">
+                    <h3 class="text-xl font-bold mb-6">Overall Health Score</h3>
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="relative w-48 h-48">
+                            <svg class="transform -rotate-90" width="192" height="192">
+                                <circle cx="96" cy="96" r="80" stroke="#e5e7eb" stroke-width="16" fill="none"></circle>
+                                <circle cx="96" cy="96" r="80" stroke="url(#gradient)" stroke-width="16" fill="none" stroke-dasharray="502" stroke-dashoffset="125" stroke-linecap="round"></circle>
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                                <div class="text-5xl font-bold text-purple-600">75</div>
+                                <div class="text-gray-600 dark:text-gray-400">Good</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600 dark:text-gray-400">Physical Health</span>
+                            <span class="font-semibold">82%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 82%"></div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600 dark:text-gray-400">Mental Well-being</span>
+                            <span class="font-semibold">70%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 70%"></div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600 dark:text-gray-400">Lifestyle Score</span>
+                            <span class="font-semibold">73%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 73%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Risk Factors -->
+                <div class="feature-card card p-8 shadow-lg">
+                    <h3 class="text-xl font-bold mb-6">Risk Factors</h3>
+                    <div class="space-y-4">
+                        <!-- Low Risk -->
+                        <div class="flex items-start space-x-3 p-4 bg-green-50 dark:bg-green-900 dark:bg-opacity-20 rounded-lg">
+                            <svg class="h-6 w-6 text-green-600 dark:text-green-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-semibold">Cardiovascular Health</span>
+                                    <span class="badge badge-success">Low Risk</span>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Your heart health indicators are excellent. Keep up the good work!</p>
+                            </div>
+                        </div>
+
+                        <!-- Moderate Risk -->
+                        <div class="flex items-start space-x-3 p-4 bg-yellow-50 dark:bg-yellow-900 dark:bg-opacity-20 rounded-lg">
+                            <svg class="h-6 w-6 text-yellow-600 dark:text-yellow-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-semibold">Diabetes Risk</span>
+                                    <span class="badge badge-warning">Moderate</span>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Blood sugar levels slightly elevated. Consider dietary adjustments.</p>
+                            </div>
+                        </div>
+
+                        <!-- Low Risk -->
+                        <div class="flex items-start space-x-3 p-4 bg-green-50 dark:bg-green-900 dark:bg-opacity-20 rounded-lg">
+                            <svg class="h-6 w-6 text-green-600 dark:text-green-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-semibold">Blood Pressure</span>
+                                    <span class="badge badge-success">Normal</span>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Blood pressure readings are within healthy range.</p>
+                            </div>
+                        </div>
+
+                        <!-- Action Required -->
+                        <div class="flex items-start space-x-3 p-4 bg-blue-50 dark:bg-blue-900 dark:bg-opacity-20 rounded-lg">
+                            <svg class="h-6 w-6 text-blue-600 dark:text-blue-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-semibold">Vitamin D Levels</span>
+                                    <span class="badge badge-info">Monitor</span>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Slightly low. Consider supplements and sun exposure.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Symptom Analyzer -->
+        <section id="symptoms" class="mb-12">
+            <h2 class="text-3xl font-bold mb-6">Quick Symptom Analyzer</h2>
+            <div class="feature-card card p-8 shadow-lg">
+                <p class="text-gray-600 dark:text-gray-400 mb-6">Select your symptoms below for instant AI analysis and recommendations</p>
+                <div class="grid md:grid-cols-3 gap-4 mb-6">
+                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-red-100 dark:bg-red-900 rounded-full p-2">
+                                <svg class="h-6 w-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-semibold">Fever</div>
+                                <div class="text-sm text-gray-500">High temperature</div>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-blue-100 dark:bg-blue-900 rounded-full p-2">
+                                <svg class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-semibold">Headache</div>
+                                <div class="text-sm text-gray-500">Head pain</div>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-green-100 dark:bg-green-900 rounded-full p-2">
+                                <svg class="h-6 w-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-semibold">Cough</div>
+                                <div class="text-sm text-gray-500">Persistent coughing</div>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-yellow-100 dark:bg-yellow-900 rounded-full p-2">
+                                <svg class="h-6 w-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-semibold">Fatigue</div>
+                                <div class="text-sm text-gray-500">Lack of energy</div>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-purple-100 dark:bg-purple-900 rounded-full p-2">
+                                <svg class="h-6 w-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-semibold">Body Aches</div>
+                                <div class="text-sm text-gray-500">Muscle pain</div>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-orange-100 dark:bg-orange-900 rounded-full p-2">
+                                <svg class="h-6 w-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-semibold">Nausea</div>
+                                <div class="text-sm text-gray-500">Feeling sick</div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <button class="btn-primary w-full py-4 rounded-full text-white font-semibold text-lg">
+                    Analyze Symptoms with AI
+                </button>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="card py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-600 dark:text-gray-400">
+            <p>&copy; 2026 Care AI. All rights reserved. • <a href="#" class="hover:text-purple-600">Privacy Policy</a> • <a href="#" class="hover:text-purple-600">Terms of Service</a></p>
+        </div>
+    </footer>
+  <script src="script.js"></script>
+</body>
+
+</html>
