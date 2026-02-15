@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>India Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #0f172a, #000);
+      overflow: hidden;
+    }
+    /* Floating animation */
+    .float { animation: float 6s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    /* Shimmer India outline */
+    .shimmer { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: dash 8s linear infinite; }
+    @keyframes dash { 0% { stroke-dashoffset: 1000; } 100% { stroke-dashoffset: 0; } }
+    /* Fade in */
+    .fade { animation: fadeIn 1.5s ease-in; }
+    @keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen relative p-4">
+
+  <!-- India Map -->
+  <div class="absolute inset-0 flex items-center justify-center opacity-20 blur-sm">
+    <svg viewBox="0 0 800 800" class="w-[500px] sm:w-[700px] h-[500px] sm:h-[700px]">
+      <defs>
+        <linearGradient id="indiaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FF9933"/>
+          <stop offset="50%" stop-color="#FFF"/>
+          <stop offset="100%" stop-color="#138808"/>
+        </linearGradient>
+      </defs>
+      <path d="M400 100 L450 150 L500 200 L480 260 L520 300 L480 350 L450 420 L420 480 L380 500 L350 460 L300 420 L280 350 L300 300 L320 250 L350 200 Z"
+            fill="none" stroke="url(#indiaGrad)" stroke-width="3"
+            class="shimmer" style="filter: drop-shadow(0 0 8px #FF9933) drop-shadow(0 0 12px #FFF) drop-shadow(0 0 16px #138808);"/>
+    </svg>
+  </div>
+
+  <!-- Login Card -->
+  <div class="relative z-10 bg-white/10 backdrop-blur-xl p-6 sm:p-8 rounded-2xl shadow-2xl w-full max-w-[350px] float fade border border-white/20">
+
+    <h2 id="title" class="text-2xl sm:text-3xl font-bold text-white text-center mb-5">Login</h2>
+
+    <form id="form" class="space-y-4">
+      <input type="email" placeholder="Email"
+             class="w-full px-4 py-2 bg-transparent border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-400 transition"  required>
+
+      <input type="password" placeholder="Password"
+             class="w-full px-4 py-2 bg-transparent border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-400 transition" required>
+
+      <div id="extra" class="hidden">
+        <input type="text" placeholder="Full Name"
+               class="w-full px-4 py-2 bg-transparent border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-400 transition">
+      </div>
+
+      <button type="submit"
+              class="w-full py-2 rounded-lg bg-gradient-to-r from-orange-500 via-white to-green-600 text-black font-semibold hover:scale-105 transition transform duration-300">
+        Submit
+      </button>
+    </form>
+
+    <!-- Divider -->
+    <div class="flex items-center my-4">
+      <div class="flex-grow h-px bg-white/30"></div>
+      <span class="mx-3 text-white text-sm">OR</span>
+      <div class="flex-grow h-px bg-white/30"></div>
+    </div>
+
+    <!-- Social Buttons -->
+    <div class="space-y-2">
+      <button class="w-full py-2 bg-red-600 hover:bg-red-700 rounded-lg text-white transition">Google</button>
+      <button class="w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white transition">Facebook</button>
+    </div>
+
+    <!-- Toggle -->
+    <p class="text-center text-white text-sm mt-5">
+      <span id="toggleText">Don't have an account?</span>
+      <button id="toggleBtn" class="text-orange-400 hover:underline ml-1">Signup</button>
+    </p>
+  </div>
+
+<script>
+  const toggleBtn = document.getElementById("toggleBtn");
+  const title = document.getElementById("title");
+  const extra = document.getElementById("extra");
+  const toggleText = document.getElementById("toggleText");
+  const form = document.getElementById("form");
+
+  let login = true;
+  toggleBtn.addEventListener("click", () => {
+    login = !login;
+    if(login){
+      title.textContent = "Login";
+      toggleBtn.textContent = "Signup";
+      toggleText.textContent = "Don't have an account?";
+      extra.classList.add("hidden");
+    } else {
+      title.textContent = "Signup";
+      toggleBtn.textContent = "Login";
+      toggleText.textContent = "Already have an account?";
+      extra.classList.remove("hidden");
+    }
+  });
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    window.location.href = "home.html";
+  });
+</script>
+</body>
+</html>
