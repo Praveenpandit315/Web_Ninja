@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Doctor - Disease Detection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .logo {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            padding: 12px 24px;
+            border-radius: 25px;
+            border: 2px solid #667eea;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+        }
+
+        .risk-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .risk-low {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .risk-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .risk-high {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f7fafc;
+        }
+
+        .upload-area:hover {
+            background: #edf2f7;
+            border-color: #764ba2;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 480px;
+            width: 100%;
+            background: white;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 16px;
+            transition: all 0.3s;
+            color: #718096;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+        }
+
+        .icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .tip-card {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .symptom-result {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .confidence-meter {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .voice-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 24px;
+        }
+
+        .voice-btn:hover {
+            transform: scale(1.1);
+            background: #764ba2;
+        }
+
+        .voice-btn.recording {
+            animation: pulse 1s infinite;
+            background: #e53e3e;
+        }
+
+        .history-item {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 10px 0;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-option {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 10px 0;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .quiz-option:hover {
+            border-color: #667eea;
+            background: white;
+        }
+
+        .quiz-option.selected {
+            border-color: #667eea;
+            background: #667eea15;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 300px;
+            background: #e2e8f0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #718096;
+            margin: 15px 0;
+        }
+
+        .clinic-card {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        .mb-3 { margin-bottom: 12px; }
+        .mb-4 { margin-bottom: 16px; }
+        .mt-4 { margin-top: 16px; }
+        .mt-5 { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- Login Screen -->
+        <div id="loginScreen" class="screen active">
+            <div style="padding: 40px 30px; text-align: center;">
+                <div class="logo" style="font-size: 3rem; margin: 40px 0;">🏥 AI Doctor</div>
+                <p style="color: #718096; margin-bottom: 40px; font-size: 16px;">Your Personal Health Assistant</p>
+
+                <input type="email" class="input-field" placeholder="Email or Phone Number" id="emailInput">
+                <input type="password" class="input-field" placeholder="Password" id="passwordInput">
+
+                <button class="btn-primary w-full mb-4" onclick="login()">Sign In</button>
+
+                <div style="margin: 20px 0; color: #718096;">or</div>
+
+                <button class="btn-secondary w-full mb-3" onclick="login()">
+                    <span style="margin-right: 8px;">🔍</span> Continue with Google
+                </button>
+
+                <p style="margin-top: 30px; color: #718096;">
+                    Don't have an account? <span style="color: #667eea; cursor: pointer; font-weight: 600;" onclick="login()">Sign Up</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Home Screen -->
+        <div id="homeScreen" class="screen">
+            <div class="header">
+                <h2>Welcome, User!</h2>
+                <div style="cursor: pointer;" onclick="showScreen('profileScreen')">👤</div>
+            </div>
+
+            <div style="padding: 20px 20px 80px 20px;">
+                <div class="card" onclick="showScreen('symptomScreen')">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 40px;">🩺</div>
+                        <div>
+                            <h3 style="font-size: 18px; font-weight: 600; color: #2d3748;">Check Symptoms</h3>
+                            <p style="color: #718096; font-size: 14px; margin-top: 5px;">Describe your symptoms</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showScreen('scanScreen')">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 40px;">📸</div>
+                        <div>
+                            <h3 style="font-size: 18px; font-weight: 600; color: #2d3748;">Scan Image</h3>
+                            <p style="color: #718096; font-size: 14px; margin-top: 5px;">AI-powered image analysis</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showScreen('riskScreen')">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 40px;">⚠️</div>
+                        <div>
+                            <h3 style="font-size: 18px; font-weight: 600; color: #2d3748;">Risk Assessment</h3>
+                            <p style="color: #718096; font-size: 14px; margin-top: 5px;">Take health quizzes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 20px; font-weight: 600; margin: 30px 0 15px 0; color: #2d3748;">💡 Quick Health Tips</h3>
+
+                <div class="tip-card">
+                    <h4 style="font-weight: 600; margin-bottom: 8px; color: #2d3748;">Stay Hydrated</h4>
+                    <p style="color: #718096; font-size: 14px;">Drink at least 8 glasses of water daily for optimal health.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h4 style="font-weight: 600; margin-bottom: 8px; color: #2d3748;">Regular Exercise</h4>
+                    <p style="color: #718096; font-size: 14px;">30 minutes of daily exercise can boost your immune system.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h4 style="font-weight: 600; margin-bottom: 8px; color: #2d3748;">Balanced Diet</h4>
+                    <p style="color: #718096; font-size: 14px;">Include fruits, vegetables, and proteins in your meals.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Symptom Checker Screen -->
+        <div id="symptomScreen" class="screen">
+            <div class="header">
+                <span onclick="showScreen('homeScreen')" style="cursor: pointer;">← Back</span>
+                <h2>Symptom Checker</h2>
+                <div></div>
+            </div>
+
+            <div style="padding: 20px;">
+                <p style="color: #718096; margin-bottom: 20px;">Describe your symptoms in detail for accurate analysis</p>
+
+                <textarea id="symptomInput" class="input-field" rows="5" placeholder="E.g., I have a headache, fever, and body aches for 2 days..."></textarea>
+
+                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 20px;">
+                    <button class="voice-btn" id="voiceBtn" onclick="toggleVoice()">🎤</button>
+                    <span style="color: #718096; font-size: 14px;" id="voiceStatus">Tap to use voice input</span>
+                </div>
+
+                <button class="btn-primary w-full" onclick="analyzeSymptoms()">🔍 Analyze Symptoms</button>
+
+                <div id="symptomResults" style="display: none; margin-top: 30px;"></div>
+            </div>
+        </div>
+
+        <!-- Scan Screen -->
+        <div id="scanScreen" class="screen">
+            <div class="header">
+                <span onclick="showScreen('homeScreen')" style="cursor: pointer;">← Back</span>
+                <h2>AI Image Scanner</h2>
+                <div></div>
+            </div>
+
+            <div style="padding: 20px;">
+                <p style="color: #718096; margin-bottom: 20px;">Upload or capture an image for AI analysis</p>
+
+                <div class="upload-area" onclick="document.getElementById('imageInput').click()">
+                    <div style="font-size: 60px; margin-bottom: 15px;">📷</div>
+                    <h3 style="font-size: 18px; font-weight: 600; color: #2d3748;">Upload Image</h3>
+                    <p style="color: #718096; margin-top: 8px; font-size: 14px;">Click to browse or drag & drop</p>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="previewImage(this)">
+                </div>
+
+                <div id="imagePreview" style="display: none; margin: 20px 0;">
+                    <img id="previewImg" style="width: 100%; border-radius: 12px; max-height: 300px; object-fit: cover;">
+                    <button class="btn-primary w-full mt-4" onclick="analyzeScan()">🔬 Analyze Image</button>
+                </div>
+
+                <div id="scanResults" style="display: none; margin-top: 30px;"></div>
+            </div>
+        </div>
+
+        <!-- Risk Assessment Screen -->
+        <div id="riskScreen" class="screen">
+            <div class="header">
+                <span onclick="showScreen('homeScreen')" style="cursor: pointer;">← Back</span>
+                <h2>Risk Assessment</h2>
+                <div></div>
+            </div>
+
+            <div style="padding: 20px;">
+                <p style="color: #718096; margin-bottom: 20px;">Take a quick quiz to assess your health risks</p>
+
+                <div id="quizSelection">
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 15px; color: #2d3748;">Select Assessment Type</h3>
+
+                    <div class="card" onclick="startQuiz('diabetes')">
+                        <h4 style="font-weight: 600; color: #2d3748;">🩸 Diabetes Risk</h4>
+                        <p style="color: #718096; font-size: 14px; margin-top: 5px;">5 questions • 2 minutes</p>
+                    </div>
+
+                    <div class="card" onclick="startQuiz('heart')">
+                        <h4 style="font-weight: 600; color: #2d3748;">❤️ Heart Disease Risk</h4>
+                        <p style="color: #718096; font-size: 14px; margin-top: 5px;">6 questions • 3 minutes</p>
+                    </div>
+
+                    <div class="card" onclick="startQuiz('mental')">
+                        <h4 style="font-weight: 600; color: #2d3748;">🧠 Mental Health Check</h4>
+                        <p style="color: #718096; font-size: 14px; margin-top: 5px;">7 questions • 3 minutes</p>
+                    </div>
+                </div>
+
+                <div id="quizContent" style="display: none;">
+                    <div style="background: #f7fafc; padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span style="color: #718096; font-size: 14px;">Question <span id="currentQ">1</span> of <span id="totalQ">5</span></span>
+                            <span style="color: #667eea; font-weight: 600;" id="quizProgress">20%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="quizProgressBar" style="width: 20%;"></div>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #2d3748;" id="questionText"></h3>
+
+                    <div id="optionsContainer"></div>
+
+                    <button class="btn-primary w-full mt-5" onclick="nextQuestion()" id="nextBtn" disabled style="opacity: 0.5;">Next Question</button>
+                </div>
+
+                <div id="quizResult" style="display: none;">
+                    <div style="text-align: center; padding: 30px 0;">
+                        <div style="font-size: 80px; margin-bottom: 20px;">📊</div>
+                        <h3 style="font-size: 24px; font-weight: 600; margin-bottom: 15px; color: #2d3748;">Assessment Complete</h3>
+
+                        <div id="riskBadge" class="risk-badge risk-low" style="font-size: 18px; display: inline-block;">LOW RISK</div>
+
+                        <p id="resultText" style="color: #718096; margin: 20px 0; font-size: 16px;"></p>
+
+                        <div style="background: #f7fafc; padding: 20px; border-radius: 12px; text-align: left; margin: 20px 0;">
+                            <h4 style="font-weight: 600; margin-bottom: 10px; color: #2d3748;">Recommendations:</h4>
+                            <ul id="recommendationsList" style="color: #718096; padding-left: 20px;">
+                            </ul>
+                        </div>
+
+                        <button class="btn-primary w-full" onclick="resetQuiz()">Take Another Assessment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nearby Help Screen -->
+        <div id="nearbyScreen" class="screen">
+            <div class="header">
+                <span onclick="showScreen('homeScreen')" style="cursor: pointer;">← Back</span>
+                <h2>Nearby Clinics</h2>
+                <div></div>
+            </div>
+
+            <div style="padding: 20px;">
+                <div class="map-container">
+                    <div style="text-align: center;">
+                        <div style="font-size: 50px; margin-bottom: 10px;">🗺️</div>
+                        <p>Map showing nearby clinics</p>
+                        <p style="font-size: 12px; color: #a0aec0; margin-top: 5px;">(Location services required)</p>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 18px; font-weight: 600; margin: 25px 0 15px 0; color: #2d3748;">📍 Nearby Facilities</h3>
+
+                <div class="clinic-card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 10px;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <h4 style="font-weight: 600; color: #2d3748; margin-bottom: 5px;">City Health Clinic</h4>
+                            <p style="color: #718096; font-size: 14px;">0.8 km away • Open now</p>
+                            <p style="color: #718096; font-size: 13px; margin-top: 5px;">⭐ 4.5 (230 reviews)</p>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn-secondary" style="padding: 8px 16px; font-size: 13px;" onclick="alert('Calling clinic...')">📞</button>
+                            <button class="btn-primary" style="padding: 8px 16px; font-size: 13px;" onclick="alert('Opening navigation...')">🧭</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clinic-card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 10px;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <h4 style="font-weight: 600; color: #2d3748; margin-bottom: 5px;">Medicare Hospital</h4>
+                            <p style="color: #718096; font-size: 14px;">1.2 km away • 24/7</p>
+                            <p style="color: #718096; font-size: 13px; margin-top: 5px;">⭐ 4.8 (450 reviews)</p>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn-secondary" style="padding: 8px 16px; font-size: 13px;" onclick="alert('Calling hospital...')">📞</button>
+                            <button class="btn-primary" style="padding: 8px 16px; font-size: 13px;" onclick="alert('Opening navigation...')">🧭</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clinic-card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 10px;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <h4 style="font-weight: 600; color: #2d3748; margin-bottom: 5px;">Family Care Center</h4>
+                            <p style="color: #718096; font-size: 14px;">2.0 km away • Closes 8 PM</p>
+                            <p style="color: #718096; font-size: 13px; margin-top: 5px;">⭐ 4.3 (180 reviews)</p>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn-secondary" style="padding: 8px 16px; font-size: 13px;" onclick="alert('Calling center...')">📞</button>
+                            <button class="btn-primary" style="padding: 8px 16px; font-size: 13px;" onclick="alert('Opening navigation...')">🧭</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #fff3cd; padding: 15px; border-radius: 12px; margin: 20px 0;">
+                    <strong style="color: #856404;">🚨 Emergency?</strong>
+                    <p style="color: #856404; margin-top: 8px; font-size: 14px;">Call emergency services immediately at 911 or your local emergency number.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Screen -->
+        <div id="historyScreen" class="screen">
+            <div class="header">
+                <span onclick="showScreen('homeScreen')" style="cursor: pointer;">← Back</span>
+                <h2>Health History</h2>
+                <div></div>
+            </div>
+
+            <div style="padding: 20px;">
+                <p style="color: #718096; margin-bottom: 20px;">Your past predictions and assessments</p>
+
+                <div class="history-item">
+                    <div>
+                        <h4 style="font-weight: 600; color: #2d3748;">Common Flu</h4>
+                        <p style="color: #718096; font-size: 13px; margin-top: 5px;">Symptom Check • Nov 10, 2025</p>
+                        <span class="risk-badge risk-medium" style="font-size: 12px; margin-top: 8px;">85% Confidence</span>
+                    </div>
+                    <button class="btn-secondary" style="padding: 8px 16px; font-size: 13px;" onclick="alert('View details')">View</button>
+                </div>
+
+                <div class="history-item">
+                    <div>
+                        <h4 style="font-weight: 600; color: #2d3748;">Skin Rash Analysis</h4>
+                        <p style="color: #718096; font-size: 13px; margin-top: 5px;">Image Scan • Nov 8, 2025</p>
+                        <span class="risk-badge risk-low" style="font-size: 12px; margin-top: 8px;">72% Confidence</span>
+                    </div>
+                    <button class="btn-secondary" style="padding: 8px 16px; font-size: 13px;" onclick="alert('View details')">View</button>
+                </div>
+
+                <div class="history-item">
+                    <div>
+                        <h4 style="font-weight: 600; color: #2d3748;">Diabetes Risk Assessment</h4>
+                        <p style="color: #718096; font-size: 13px; margin-top: 5px;">Quiz • Nov 5, 2025</p>
+                        <span class="risk-badge risk-low" style="font-size: 12px; margin-top: 8px;">Low Risk</span>
+                    </div>
+                    <button class="btn-secondary" style="padding: 8px 16px; font-size: 13px;" onclick="alert('View details')">View</button>
+                </div>
+
+                <div style="text-align: center; padding: 40px 0; color: #a0aec0;">
+                    <p>That's all your history!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Screen -->
+        <div id="profileScreen" class="screen">
+            <div class="header">
+                <span onclick="showScreen('homeScreen')" style="cursor: pointer;">← Back</span>
+                <h2>Profile</h2>
+                <div></div>
+            </div>
+
+            <div style="padding: 20px;">
+                <div style="text-align: center; padding: 20px 0;">
+                    <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: white;">
+                        👤
+                    </div>
+                    <h3 style="font-size: 22px; font-weight: 600; color: #2d3748;">John Doe</h3>
+                    <p style="color: #718096; margin-top: 5px;">john.doe@email.com</p>
+                </div>
+
+                <div class="card" onclick="alert('Edit profile')">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 24px;">✏️</div>
+                        <div>
+                            <h4 style="font-weight: 600; color: #2d3748;">Edit Profile</h4>
+                            <p style="color: #718096; font-size: 14px; margin-top: 5px;">Update your information</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" onclick="alert('Settings')">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 24px;">⚙️</div>
+                        <div>
+                            <h4 style="font-weight: 600; color: #2d3748;">Settings</h4>
+                            <p style="color: #718096; font-size: 14px; margin-top: 5px;">Manage app preferences</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" onclick="alert('Privacy Policy')">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 24px;">🔒</div>
+                        <div>
+                            <h4 style="font-weight: 600; color: #2d3748;">Privacy & Security</h4>
+                            <p style="color: #718096; font-size: 14px; margin-top: 5px;">Data protection settings</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" onclick="alert('Help & Support')">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 24px;">❓</div>
+                        <div>
+                            <h4 style="font-weight: 600; color: #2d3748;">Help & Support</h4>
+                            <p style="color: #718096; font-size: 14px; margin-top: 5px;">Get assistance</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-secondary w-full" style="margin-top: 30px;" onclick="logout()">
+                    🚪 Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="setActiveNav(this); showScreen('homeScreen')">
+                <div class="icon">🏠</div>
+                <span style="font-size: 12px;">Home</span>
+            </div>
+            <div class="nav-item" onclick="setActiveNav(this); showScreen('nearbyScreen')">
+                <div class="icon">📍</div>
+                <span style="font-size: 12px;">Nearby</span>
+            </div>
+            <div class="nav-item" onclick="setActiveNav(this); showScreen('historyScreen')">
+                <div class="icon">📋</div>
+                <span style="font-size: 12px;">History</span>
+            </div>
+            <div class="nav-item" onclick="setActiveNav(this); showScreen('profileScreen')">
+                <div class="icon">👤</div>
+                <span style="font-size: 12px;">Profile</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentQuizType = '';
+        let currentQuestionIndex = 0;
+        let quizAnswers = [];
+        let isRecording = false;
+
+        // Quiz data
+        const quizData = {
+            diabetes: {
+                questions: [
+                    {
+                        question: "How often do you exercise?",
+                        options: ["Daily", "2-3 times per week", "Rarely", "Never"]
+                    },
+                    {
+                        question: "What is your age group?",
+                        options: ["Under 30", "30-45", "46-60", "Over 60"]
+                    },
+                    {
+                        question: "Do you have a family history of diabetes?",
+                        options: ["Yes, immediate family", "Yes, extended family", "No", "Not sure"]
+                    },
+                    {
+                        question: "How would you describe your diet?",
+                        options: ["Very healthy", "Moderately healthy", "Average", "Poor"]
+                    },
+                    {
+                        question: "What is your BMI category?",
+                        options: ["Normal (18.5-24.9)", "Overweight (25-29.9)", "Obese (30+)", "Not sure"]
+                    }
+                ]
+            },
+            heart: {
+                questions: [
+                    {
+                        question: "Do you smoke?",
+                        options: ["Never", "Former smoker", "Occasionally", "Daily"]
+                    },
+                    {
+                        question: "How often do you experience chest discomfort?",
+                        options: ["Never", "Rarely", "Sometimes", "Frequently"]
+                    },
+                    {
+                        question: "What is your blood pressure status?",
+                        options: ["Normal", "Slightly elevated", "High", "Not sure"]
+                    },
+                    {
+                        question: "How often do you exercise?",
+                        options: ["Daily", "2-3 times per week", "Rarely", "Never"]
+                    },
+                    {
+                        question: "Do you have a family history of heart disease?",
+                        options: ["No", "Yes, one relative", "Yes, multiple relatives", "Not sure"]
+                    },
+                    {
+                        question: "How would you rate your stress level?",
+                        options: ["Low", "Moderate", "High", "Very high"]
+                    }
+                ]
+            },
+            mental: {
+                questions: [
+                    {
+                        question: "How often do you feel anxious or worried?",
+                        options: ["Rarely", "Sometimes", "Often", "Almost always"]
+                    },
+                    {
+                        question: "How would you rate your sleep quality?",
+                        options: ["Excellent", "Good", "Fair", "Poor"]
+                    },
+                    {
+                        question: "Do you feel motivated in daily activities?",
+                        options: ["Very motivated", "Moderately motivated", "Somewhat unmotivated", "Very unmotivated"]
+                    },
+                    {
+                        question: "How often do you socialize with others?",
+                        options: ["Very often", "Regularly", "Occasionally", "Rarely"]
+                    },
+                    {
+                        question: "How do you handle stress?",
+                        options: ["Very well", "Moderately well", "With difficulty", "Poorly"]
+                    },
+                    {
+                        question: "Have you experienced significant mood changes recently?",
+                        options: ["No changes", "Minor changes", "Moderate changes", "Significant changes"]
+                    },
+                    {
+                        question: "How satisfied are you with your life currently?",
+                        options: ["Very satisfied", "Satisfied", "Somewhat dissatisfied", "Very dissatisfied"]
+                    }
+                ]
+            }
+        };
+
+        // Screen navigation
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // Login function
+        function login() {
+            showScreen('homeScreen');
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                showScreen('loginScreen');
+            }
+        }
+
+        // Set active navigation
+        function setActiveNav(element) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            element.classList.add('active');
+        }
+
+        // Voice input toggle
+        function toggleVoice() {
+            const voiceBtn = document.getElementById('voiceBtn');
+            const voiceStatus = document.getElementById('voiceStatus');
+            
+            isRecording = !isRecording;
+            
+            if (isRecording) {
+                voiceBtn.classList.add('recording');
+                voiceStatus.textContent = '🔴 Recording... Tap to stop';
+                
+                // Simulate voice recording
+                setTimeout(() => {
+                    if (isRecording) {
+                        toggleVoice();
+                        document.getElementById('symptomInput').value = "I have been experiencing headaches and mild fever for the past 2 days.";
+                    }
+                }, 3000);
+            } else {
+                voiceBtn.classList.remove('recording');
+                voiceStatus.textContent = 'Tap to use voice input';
+            }
+        }
+
+        // Analyze symptoms
+        function analyzeSymptoms() {
+            const symptoms = document.getElementById('symptomInput').value.trim();
+            
+            if (!symptoms) {
+                alert('Please describe your symptoms first!');
+                return;
+            }
+
+            const resultsDiv = document.getElementById('symptomResults');
+            resultsDiv.innerHTML = '<div class="spinner"></div>';
+            resultsDiv.style.display = 'block';
+
+            // Simulate AI analysis
+            setTimeout(() => {
+                resultsDiv.innerHTML = `
+                    <div class="symptom-result">
+                        <h3 style="font-size: 20px; font-weight: 600; color: #2d3748; margin-bottom: 15px;">Analysis Results</h3>
+                        
+                        <div style="background: white; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                            <h4 style="font-weight: 600; color: #2d3748; margin-bottom: 10px;">🦠 Possible Condition: Common Flu</h4>
+                            <div class="confidence-meter">
+                                <span style="color: #718096; font-size: 14px;">Confidence:</span>
+                                <div class="progress-bar" style="flex: 1;">
+                                    <div class="progress-fill" style="width: 85%;"></div>
+                                </div>
+                                <span style="color: #667eea; font-weight: 600;">85%</span>
+                            </div>
+                        </div>
+
+                        <div style="background: #fff3cd; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                            <h4 style="font-weight: 600; color: #856404; margin-bottom: 10px;">⚠️ Symptoms Match</h4>
+                            <ul style="color: #856404; padding-left: 20px; font-size: 14px;">
+                                <li>Headache ✓</li>
+                                <li>Fever ✓</li>
+                                <li>Body aches (typical)</li>
+                            </ul>
+                        </div>
+
+                        <div style="background: #d4edda; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                            <h4 style="font-weight: 600; color: #155724; margin-bottom: 10px;">💊 Recommendations</h4>
+                            <ul style="color: #155724; padding-left: 20px; font-size: 14px;">
+                                <li style="margin: 5px 0;">Rest and stay hydrated</li>
+                                <li style="margin: 5px 0;">Take over-the-counter pain relievers</li>
+                                <li style="margin: 5px 0;">Monitor temperature regularly</li>
+                                <li style="margin: 5px 0;">Consult a doctor if symptoms worsen</li>
+                            </ul>
+                        </div>
+
+                        <div style="background: #f8d7da; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                            <h4 style="font-weight: 600; color: #721c24; margin-bottom: 10px;">🚨 When to Seek Emergency Care</h4>
+                            <p style="color: #721c24; font-size: 14px;">Contact a doctor immediately if you experience: difficulty breathing, chest pain, persistent high fever (>103°F), or severe weakness.</p>
+                        </div>
+
+                        <button class="btn-primary w-full" onclick="showScreen('nearbyScreen')">🏥 Find Nearby Clinics</button>
+                    </div>
+                `;
+            }, 2000);
+        }
+
+        // Preview uploaded image
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Analyze scan
+        function analyzeScan() {
+            const resultsDiv = document.getElementById('scanResults');
+            resultsDiv.innerHTML = '<div class="spinner"></div>';
+            resultsDiv.style.display = 'block';
+
+            setTimeout(() => {
+                resultsDiv.innerHTML = `
+                    <div class="symptom-result">
+                        <h3 style="font-size: 20px; font-weight: 600; color: #2d3748; margin-bottom: 15px;">Image Analysis Results</h3>
+                        
+                        <div style="background: white; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                            <h4 style="font-weight: 600; color: #2d3748; margin-bottom: 10px;">🔬 Detection: Minor Skin Irritation</h4>
+                            <div class="confidence-meter">
+                                <span style="color: #718096; font-size: 14px;">Confidence:</span>
+                                <div class="progress-bar" style="flex: 1;">
+                                    <div class="progress-fill" style="width: 78%;"></div>
+                                </div>
+                                <span style="color: #667eea; font-weight: 600;">78%</span>
+                            </div>
+                        </div>
+
+                        <div style="background: #d4edda; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                            <h4 style="font-weight: 600; color: #155724; margin-bottom: 10px;">✅ Analysis</h4>
+                            <p style="color: #155724; font-size: 14px;">The image shows signs of mild skin irritation, possibly from contact dermatitis or minor allergic reaction. The affected area appears slightly inflamed but without severe symptoms.</p>
+                        </div>
+
+                        <div style="background: #fff3cd; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                            <h4 style="font-weight: 600; color: #856404; margin-bottom: 10px;">💡 Recommendations</h4>
+                            <ul style="color: #856404; padding-left: 20px; font-size: 14px;">
+                                <li style="margin: 5px 0;">Apply cold compress to reduce inflammation</li>
+                                <li style="margin: 5px 0;">Avoid scratching the affected area</li>
+                                <li style="margin: 5px 0;">Use over-the-counter anti-itch cream</li>
+                                <li style="margin: 5px 0;">Keep the area clean and dry</li>
+                            </ul>
+                        </div>
+
+                        <p style="color: #718096; font-size: 13px; font-style: italic; text-align: center;">⚠️ This is an AI-powered analysis. Please consult a dermatologist for accurate diagnosis.</p>
+
+                        <button class="btn-primary w-full mt-4" onclick="showScreen('nearbyScreen')">🏥 Find Dermatologist</button>
+                    </div>
+                `;
+            }, 2500);
+        }
+
+        // Start quiz
+        function startQuiz(type) {
+            currentQuizType = type;
+            currentQuestionIndex = 0;
+            quizAnswers = [];
+            
+            document.getElementById('quizSelection').style.display = 'none';
+            document.getElementById('quizContent').style.display = 'block';
+            document.getElementById('totalQ').textContent = quizData[type].questions.length;
+            
+            loadQuestion();
+        }
+
+        // Load quiz question
+        function loadQuestion() {
+            const quiz = quizData[currentQuizType];
+            const question = quiz.questions[currentQuestionIndex];
+            
+            document.getElementById('currentQ').textContent = currentQuestionIndex + 1;
+            document.getElementById('questionText').textContent = question.question;
+            
+            const progress = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
+            document.getElementById('quizProgress').textContent = Math.round(progress) + '%';
+            document.getElementById('quizProgressBar').style.width = progress + '%';
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'quiz-option';
+                optionDiv.innerHTML = `<span style="font-weight: 500;">${option}</span>`;
+                optionDiv.onclick = () => selectOption(optionDiv, index);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            document.getElementById('nextBtn').disabled = true;
+            document.getElementById('nextBtn').style.opacity = '0.5';
+        }
+
+        // Select quiz option
+        function selectOption(element, value) {
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            
+            quizAnswers[currentQuestionIndex] = value;
+            
+            document.getElementById('nextBtn').disabled = false;
+            document.getElementById('nextBtn').style.opacity = '1';
+        }
+
+        // Next question
+        function nextQuestion() {
+            const quiz = quizData[currentQuizType];
+            
+            if (currentQuestionIndex < quiz.questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                showQuizResults();
+            }
+        }
+
+        // Show quiz results
+        function showQuizResults() {
+            document.getElementById('quizContent').style.display = 'none';
+            document.getElementById('quizResult').style.display = 'block';
+            
+            // Calculate risk based on answers
+            const avgScore = quizAnswers.reduce((a, b) => a + b, 0) / quizAnswers.length;
+            
+            let riskLevel, riskClass, riskText, recommendations;
+            
+            if (avgScore < 1.5) {
+                riskLevel = 'LOW RISK';
+                riskClass = 'risk-low';
+                riskText = 'Based on your responses, your risk level is currently low. Keep maintaining a healthy lifestyle!';
+                recommendations = [
+                    'Continue regular exercise routine',
+                    'Maintain balanced diet',
+                    'Get annual check-ups',
+                    'Monitor stress levels'
+                ];
+            } else if (avgScore < 2.5) {
+                riskLevel = 'MODERATE RISK';
+                riskClass = 'risk-medium';
+                riskText = 'Your responses indicate a moderate risk level. Consider making some lifestyle improvements.';
+                recommendations = [
+                    'Increase physical activity',
+                    'Improve diet quality',
+                    'Schedule regular health screenings',
+                    'Reduce stress through relaxation techniques',
+                    'Consult with a healthcare provider'
+                ];
+            } else {
+                riskLevel = 'HIGH RISK';
+                riskClass = 'risk-high';
+                riskText = 'Your responses suggest a higher risk level. It is recommended to consult with a healthcare professional soon.';
+                recommendations = [
+                    'Schedule an appointment with your doctor',
+                    'Begin a supervised exercise program',
+                    'Work with a nutritionist for diet planning',
+                    'Consider medication if prescribed',
+                    'Regular health monitoring is essential'
+                ];
+            }
+            
+            document.getElementById('riskBadge').textContent = riskLevel;
+            document.getElementById('riskBadge').className = 'risk-badge ' + riskClass;
+            document.getElementById('resultText').textContent = riskText;
+            
+            const recList = document.getElementById('recommendationsList');
+            recList.innerHTML = '';
+            recommendations.forEach(rec => {
+                const li = document.createElement('li');
+                li.style.margin = '8px 0';
+                li.textContent = rec;
+                recList.appendChild(li);
+            });
+        }
+
+        // Reset quiz
+        function resetQuiz() {
+            document.getElementById('quizResult').style.display = 'none';
+            document.getElementById('quizSelection').style.display = 'block';
+            currentQuizType = '';
+            currentQuestionIndex = 0;
+            quizAnswers = [];
+        }
+    </script>
+</body>
+</html>
