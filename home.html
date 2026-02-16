@@ -282,10 +282,12 @@
         </section>
 
         <!-- Medicine Reminders -->
+    <div class="max-w-7xl mx-auto">
+        <!-- Medicine Reminders -->
         <section id="medicines" class="mb-12">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-3xl font-bold">Medicine Reminders</h2>
-                <button class="btn-primary px-6 py-2 rounded-full text-white font-semibold flex items-center space-x-2">
+            <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Medicine Reminders</h2>
+                <button id="add-medicine-btn" class="btn-primary px-6 py-2 rounded-full text-white font-semibold flex items-center space-x-2">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
@@ -293,144 +295,89 @@
                 </button>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-6">
-                <!-- Medicine Card 1 -->
-                <div class="medicine-card card p-6 shadow-lg">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="flex items-start space-x-4">
-                            <div class="bg-blue-100 dark:bg-blue-900 rounded-lg p-3">
-                                <svg class="h-8 w-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-xl mb-1">Aspirin</h3>
-                                <p class="text-gray-600 dark:text-gray-400 text-sm">100mg • After breakfast</p>
-                                <span class="badge badge-info mt-2">Daily</span>
-                            </div>
-                        </div>
-                        <button class="text-gray-400 hover:text-gray-600">
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span>Next: 9:00 AM (in 2 hours)</span>
-                        </div>
-                        <button class="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition font-semibold">
-                            Mark Taken
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Medicine Card 2 -->
-                <div class="medicine-card card p-6 shadow-lg">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="flex items-start space-x-4">
-                            <div class="bg-red-100 dark:bg-red-900 rounded-lg p-3">
-                                <svg class="h-8 w-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-xl mb-1">Vitamin D3</h3>
-                                <p class="text-gray-600 dark:text-gray-400 text-sm">1000 IU • After lunch</p>
-                                <span class="badge badge-warning mt-2">Weekly</span>
-                            </div>
-                        </div>
-                        <button class="text-gray-400 hover:text-gray-600">
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span>Next: 1:00 PM (in 5 hours)</span>
-                        </div>
-                        <button class="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition font-semibold">
-                            Mark Taken
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Medicine Card 3 -->
-                <div class="medicine-card card p-6 shadow-lg">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="flex items-start space-x-4">
-                            <div class="bg-purple-100 dark:bg-purple-900 rounded-lg p-3">
-                                <svg class="h-8 w-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-xl mb-1">Omega-3</h3>
-                                <p class="text-gray-600 dark:text-gray-400 text-sm">500mg • After dinner</p>
-                                <span class="badge badge-info mt-2">Daily</span>
-                            </div>
-                        </div>
-                        <button class="text-gray-400 hover:text-gray-600">
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2 text-sm text-green-600 dark:text-green-400">
-                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span>Taken at 8:30 PM</span>
-                        </div>
-                        <span class="badge badge-success">Completed</span>
-                    </div>
-                </div>
-
-                <!-- Medicine Card 4 -->
-                <div class="medicine-card card p-6 shadow-lg">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="flex items-start space-x-4">
-                            <div class="bg-orange-100 dark:bg-orange-900 rounded-lg p-3">
-                                <svg class="h-8 w-8 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-xl mb-1">Multivitamin</h3>
-                                <p class="text-gray-600 dark:text-gray-400 text-sm">1 tablet • Morning</p>
-                                <span class="badge badge-info mt-2">Daily</span>
-                            </div>
-                        </div>
-                        <button class="text-gray-400 hover:text-gray-600">
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2 text-sm text-red-600 dark:text-red-400 pulse">
-                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span>Missed: 7:00 AM</span>
-                        </div>
-                        <button class="px-4 py-2 bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 rounded-lg hover:bg-yellow-200 dark:hover:bg-yellow-800 transition font-semibold">
-                            Take Now
-                        </button>
-                    </div>
-                </div>
+            <div id="medicine-grid" class="grid md:grid-cols-2 gap-6">
+                <!-- Medicine cards will be dynamically inserted here -->
+            </div>
+            
+            <div id="empty-state" class="text-center py-12 hidden">
+                <svg class="h-24 w-24 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+                <p class="text-gray-500 dark:text-gray-400 text-lg mb-4">No medicines added yet</p>
+                <button class="btn-primary px-6 py-2 rounded-full text-white font-semibold" onclick="document.getElementById('add-medicine-btn').click()">
+                    Add Your First Medicine
+                </button>
             </div>
         </section>
+    </div>
 
-        <!-- Risk Assessment Section -->
+    <!-- Add Medicine Modal -->
+    <div id="add-medicine-modal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Add Medicine</h3>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="medicine-form">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Medicine Name</label>
+                        <input type="text" id="medicine-name" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent dark:bg-gray-700 dark:text-white" placeholder="e.g., Aspirin">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Dosage</label>
+                        <input type="text" id="medicine-dosage" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent dark:bg-gray-700 dark:text-white" placeholder="e.g., 100mg">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Time</label>
+                        <input type="time" id="medicine-time" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent dark:bg-gray-700 dark:text-white">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Instructions</label>
+                        <input type="text" id="medicine-instructions" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent dark:bg-gray-700 dark:text-white" placeholder="e.g., After breakfast">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Frequency</label>
+                        <select id="medicine-frequency" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent dark:bg-gray-700 dark:text-white">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="as-needed">As Needed</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Icon Color</label>
+                        <div class="grid grid-cols-4 gap-2">
+                            <button type="button" class="color-btn w-full h-12 rounded-lg bg-blue-100 dark:bg-blue-900 border-2 border-transparent hover:border-purple-600" data-color="blue"></button>
+                            <button type="button" class="color-btn w-full h-12 rounded-lg bg-red-100 dark:bg-red-900 border-2 border-transparent hover:border-purple-600" data-color="red"></button>
+                            <button type="button" class="color-btn w-full h-12 rounded-lg bg-purple-100 dark:bg-purple-900 border-2 border-transparent hover:border-purple-600" data-color="purple"></button>
+                            <button type="button" class="color-btn w-full h-12 rounded-lg bg-orange-100 dark:bg-orange-900 border-2 border-transparent hover:border-purple-600" data-color="orange"></button>
+                        </div>
+                        <input type="hidden" id="medicine-color" value="blue">
+                    </div>
+                </div>
+                
+                <div class="flex gap-3 mt-6">
+                    <button type="submit" class="flex-1 btn-primary py-3 rounded-full text-white font-semibold">
+                        Add Medicine
+                    </button>
+                    <button type="button" id="cancel-btn" class="flex-1 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+ <!-- Risk Assessment Section -->
         <section id="assessment" class="mb-12">
             <h2 class="text-3xl font-bold mb-6">Your Health Assessment</h2>
             <div class="grid md:grid-cols-2 gap-6">
@@ -543,14 +490,15 @@
                 </div>
             </div>
         </section>
-
+    <div class="max-w-6xl mx-auto">
         <!-- Symptom Analyzer -->
         <section id="symptoms" class="mb-12">
-            <h2 class="text-3xl font-bold mb-6">Quick Symptom Analyzer</h2>
-            <div class="feature-card card p-8 shadow-lg">
+            <h2 class="text-3xl font-bold mb-6 text-gray-900 dark:text-white">Quick Symptom Analyzer</h2>
+            <div class="feature-card p-8 shadow-lg">
                 <p class="text-gray-600 dark:text-gray-400 mb-6">Select your symptoms below for instant AI analysis and recommendations</p>
-                <div class="grid md:grid-cols-3 gap-4 mb-6">
-                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left">
+                
+                <div class="grid md:grid-cols-3 gap-4 mb-6" id="symptom-grid">
+                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left" data-symptom="fever">
                         <div class="flex items-center space-x-3">
                             <div class="bg-red-100 dark:bg-red-900 rounded-full p-2">
                                 <svg class="h-6 w-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -558,13 +506,13 @@
                                 </svg>
                             </div>
                             <div>
-                                <div class="font-semibold">Fever</div>
+                                <div class="font-semibold text-gray-900 dark:text-white">Fever</div>
                                 <div class="text-sm text-gray-500">High temperature</div>
                             </div>
                         </div>
                     </button>
                     
-                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left">
+                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left" data-symptom="headache">
                         <div class="flex items-center space-x-3">
                             <div class="bg-blue-100 dark:bg-blue-900 rounded-full p-2">
                                 <svg class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -572,13 +520,13 @@
                                 </svg>
                             </div>
                             <div>
-                                <div class="font-semibold">Headache</div>
+                                <div class="font-semibold text-gray-900 dark:text-white">Headache</div>
                                 <div class="text-sm text-gray-500">Head pain</div>
                             </div>
                         </div>
                     </button>
                     
-                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left">
+                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left" data-symptom="cough">
                         <div class="flex items-center space-x-3">
                             <div class="bg-green-100 dark:bg-green-900 rounded-full p-2">
                                 <svg class="h-6 w-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -586,13 +534,13 @@
                                 </svg>
                             </div>
                             <div>
-                                <div class="font-semibold">Cough</div>
+                                <div class="font-semibold text-gray-900 dark:text-white">Cough</div>
                                 <div class="text-sm text-gray-500">Persistent coughing</div>
                             </div>
                         </div>
                     </button>
                     
-                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left">
+                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left" data-symptom="fatigue">
                         <div class="flex items-center space-x-3">
                             <div class="bg-yellow-100 dark:bg-yellow-900 rounded-full p-2">
                                 <svg class="h-6 w-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -600,13 +548,13 @@
                                 </svg>
                             </div>
                             <div>
-                                <div class="font-semibold">Fatigue</div>
+                                <div class="font-semibold text-gray-900 dark:text-white">Fatigue</div>
                                 <div class="text-sm text-gray-500">Lack of energy</div>
                             </div>
                         </div>
                     </button>
                     
-                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left">
+                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left" data-symptom="body-aches">
                         <div class="flex items-center space-x-3">
                             <div class="bg-purple-100 dark:bg-purple-900 rounded-full p-2">
                                 <svg class="h-6 w-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -614,13 +562,13 @@
                                 </svg>
                             </div>
                             <div>
-                                <div class="font-semibold">Body Aches</div>
+                                <div class="font-semibold text-gray-900 dark:text-white">Body Aches</div>
                                 <div class="text-sm text-gray-500">Muscle pain</div>
                             </div>
                         </div>
                     </button>
                     
-                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left">
+                    <button class="symptom-btn p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900 dark:hover:bg-opacity-20 transition text-left" data-symptom="nausea">
                         <div class="flex items-center space-x-3">
                             <div class="bg-orange-100 dark:bg-orange-900 rounded-full p-2">
                                 <svg class="h-6 w-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -628,20 +576,39 @@
                                 </svg>
                             </div>
                             <div>
-                                <div class="font-semibold">Nausea</div>
+                                <div class="font-semibold text-gray-900 dark:text-white">Nausea</div>
                                 <div class="text-sm text-gray-500">Feeling sick</div>
                             </div>
                         </div>
                     </button>
                 </div>
-                <button class="btn-primary w-full py-4 rounded-full text-white font-semibold text-lg">
+                
+                <div class="mb-4">
+                    <p class="text-sm text-gray-500 dark:text-gray-400" id="selection-count">No symptoms selected</p>
+                </div>
+                
+                <button id="analyze-btn" class="btn-primary w-full py-4 rounded-full text-white font-semibold text-lg" disabled>
                     Analyze Symptoms with AI
                 </button>
+                
+                <!-- Results Container -->
+                <div id="result-container" class="mt-6 hidden">
+                    <div class="bg-purple-50 dark:bg-purple-900 dark:bg-opacity-20 border-2 border-purple-200 dark:border-purple-700 rounded-lg p-6">
+                        <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
+                            <svg class="h-6 w-6 text-purple-600 dark:text-purple-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Analysis Results
+                        </h3>
+                        <div id="result-content" class="text-gray-700 dark:text-gray-300"></div>
+                        <button id="clear-btn" class="mt-4 px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                            Clear & Start Over
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
-
     </div>
-
     <!-- Footer -->
     <footer class="card py-8 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-600 dark:text-gray-400">
