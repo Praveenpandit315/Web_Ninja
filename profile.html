@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" class="transition-colors duration-300">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+</head>
+
+<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+
+<!-- ============= NAVBAR ============= -->
+<div class="flex justify-between items-center p-6 max-w-5xl mx-auto">
+
+    <h1 class="text-2xl font-bold text-purple-600 dark:text-purple-400">
+        Care AI Profile
+    </h1>
+
+    <!-- Theme Toggle -->
+    <button onclick="toggleTheme()"
+        class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow-md transition">
+        🌙 
+    </button>
+
+</div>
+
+
+<!-- ============= PROFILE CARD ============= -->
+<div class="max-w-xl mx-auto bg-white dark:bg-gray-800 shadow-2xl rounded-3xl p-8 transition">
+
+    <div class="text-center">
+
+        <!-- Profile Image -->
+        <div class="relative w-32 h-32 mx-auto mb-6">
+            <img id="profilePreview"
+                src="https://via.placeholder.com/150"
+                class="w-32 h-32 object-cover rounded-full border-4 border-purple-500 shadow-lg">
+
+            <input type="file" id="profileImage"
+                class="hidden"
+                accept="image/*"
+                onchange="previewProfile(event)">
+
+            <button onclick="document.getElementById('profileImage').click()"
+                class="absolute bottom-0 right-0 bg-purple-600 text-white p-2 rounded-full shadow-md hover:bg-purple-700">
+                📷
+            </button>
+        </div>
+
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+            My Profile
+        </h2>
+
+        <p class="text-gray-500 dark:text-gray-400 mb-6">
+            Update your personal information
+        </p>
+
+    </div>
+
+    <!-- Form -->
+    <div class="space-y-5">
+
+        <!-- Name -->
+        <div>
+            <label class="block mb-1 text-gray-600 dark:text-gray-300">Full Name</label>
+            <input type="text" id="name"
+                class="w-full p-3 rounded-xl border border-gray-300 dark:border-gray-600
+                       bg-gray-50 dark:bg-gray-700
+                       text-gray-800 dark:text-white
+                       focus:ring-2 focus:ring-purple-500 outline-none">
+        </div>
+
+        <!-- Age -->
+        <div>
+            <label class="block mb-1 text-gray-600 dark:text-gray-300">Age</label>
+            <input type="number" id="age"
+                class="w-full p-3 rounded-xl border border-gray-300 dark:border-gray-600
+                       bg-gray-50 dark:bg-gray-700
+                       text-gray-800 dark:text-white
+                       focus:ring-2 focus:ring-purple-500 outline-none">
+        </div>
+
+        <!-- Email -->
+        <div>
+            <label class="block mb-1 text-gray-600 dark:text-gray-300">Email</label>
+            <input type="email" id="email"
+                class="w-full p-3 rounded-xl border border-gray-300 dark:border-gray-600
+                       bg-gray-50 dark:bg-gray-700
+                       text-gray-800 dark:text-white
+                       focus:ring-2 focus:ring-purple-500 outline-none">
+        </div>
+
+        <!-- Save Button -->
+        <button onclick="saveProfile()"
+            class="w-full bg-purple-600 hover:bg-purple-700
+                   text-white py-3 rounded-xl shadow-md transition">
+            💾 Save Profile
+        </button>
+<pre>
+<a href="/home.html" ><button class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl shadow-md transition">Next</button></a></pre>
+        <!-- Success Message -->
+        <div id="successMessage"
+            class="hidden text-center mt-4 text-green-600 font-semibold">
+            ✅ Profile Saved Successfully!
+        </div>
+        
+    </div>
+
+</div>
+
+
+<!-- ============= SCRIPT ============= -->
+<script>
+
+    // ================= THEME TOGGLE =================
+    function toggleTheme() {
+        document.documentElement.classList.toggle("dark");
+    }
+
+
+    // ================= IMAGE PREVIEW =================
+    function previewProfile(event) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            document.getElementById("profilePreview").src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+
+    // ================= SAVE PROFILE =================
+    function saveProfile() {
+
+        const name = document.getElementById("name").value;
+        const age = document.getElementById("age").value;
+        const email = document.getElementById("email").value;
+
+        if (!name || !age || !email) {
+            alert("Please fill all fields!");
+            return;
+        }
+
+        localStorage.setItem("profileName", name);
+        localStorage.setItem("profileAge", age);
+        localStorage.setItem("profileEmail", email);
+
+        document.getElementById("successMessage").classList.remove("hidden");
+
+        setTimeout(() => {
+            document.getElementById("successMessage").classList.add("hidden");
+        }, 2000);
+    }
+
+
+    // ================= LOAD SAVED DATA =================
+    window.onload = function () {
+        if (localStorage.getItem("profileName")) {
+            document.getElementById("name").value = localStorage.getItem("profileName");
+            document.getElementById("age").value = localStorage.getItem("profileAge");
+            document.getElementById("email").value = localStorage.getItem("profileEmail");
+        }
+    }
+
+</script>
+
+</body>
+</html>
